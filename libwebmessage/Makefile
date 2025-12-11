@@ -10,7 +10,8 @@ TWEAK_NAME = libwebmessage
 
 libwebmessage_FILES = Tweak.x
 libwebmessage_CFLAGS = -fobjc-arc
-libwebmessage_LIBRARIES = mryipc
+libwebmessage_LIBRARIES = mryipc c++
+libwebmessage_LDFLAGS = -lc++
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 

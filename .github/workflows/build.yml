@@ -1,0 +1,61 @@
+name: Build WebMessage .deb
+
+on:
+  push:
+    branches: [ main, develop ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+      
+    - name: Build Docker image
+      run: |
+        docker build -t webmessage-builder:latest .
+        
+    - name: Build .deb package
+      run: |
+        docker run --name webmessage-build webmessage-builder:latest
+        mkdir -p output
+        docker cp webmessage-build:/build/WebMessage.deb ./output/
+        docker rm webmessage-build
+        
+    - name: Get package info
+      run: |
+        echo "## Package Information" >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        dpkg-deb --info output/WebMessage.deb >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## Package Size" >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        ls -lh output/WebMessage.deb >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        
+    - name: Upload .deb artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: WebMessage-deb
+        path: output/WebMessage.deb
+        retention-days: 30
+        
+    - name: Create Release (on tag)
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: output/WebMessage.deb
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
