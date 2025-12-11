@@ -1,61 +1,83 @@
-name: Build WebMessage .deb
+name: Build and Release .deb Package
 
 on:
   push:
-    branches: [ main, develop ]
     tags:
       - 'v*'
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:
 
 jobs:
-  build:
+  build-deb:
     runs-on: ubuntu-latest
-    
+    permissions:
+      contents: write
+      packages: read
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      
+    - name: Checkout code
+      uses: actions/checkout@v4
+
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-      
+      uses: docker/setup-buildx-action@v3
+
     - name: Build Docker image
       run: |
         docker build -t webmessage-builder:latest .
-        
+
     - name: Build .deb package
       run: |
-        docker run --name webmessage-build webmessage-builder:latest
+        docker run --name webmessage-build-container webmessage-builder:latest /build/build.sh
         mkdir -p output
-        docker cp webmessage-build:/build/WebMessage.deb ./output/
-        docker rm webmessage-build
-        
+        docker cp webmessage-build-container:/build/WebMessage.deb ./output/WebMessage.deb
+        docker rm webmessage-build-container
+
     - name: Get package info
+      id: package_info
       run: |
-        echo "## Package Information" >> $GITHUB_STEP_SUMMARY
-        echo '```' >> $GITHUB_STEP_SUMMARY
-        dpkg-deb --info output/WebMessage.deb >> $GITHUB_STEP_SUMMARY
-        echo '```' >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "## Package Size" >> $GITHUB_STEP_SUMMARY
-        echo '```' >> $GITHUB_STEP_SUMMARY
-        ls -lh output/WebMessage.deb >> $GITHUB_STEP_SUMMARY
-        echo '```' >> $GITHUB_STEP_SUMMARY
-        
-    - name: Upload .deb artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: WebMessage-deb
-        path: output/WebMessage.deb
-        retention-days: 30
-        
-    - name: Create Release (on tag)
-      if: startsWith(github.ref, 'refs/tags/v')
-      uses: softprops/action-gh-release@v1
-      with:
-        files: output/WebMessage.deb
-        draft: false
-        prerelease: false
+        VERSION=$(dpkg-deb -f output/WebMessage.deb Version)
+        SIZE=$(ls -lh output/WebMessage.deb | awk '{print $5}')
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "size=$SIZE" >> $GITHUB_OUTPUT
+        echo "Package version: $VERSION"
+        echo "Package size: $SIZE"
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: WebMessage ${{ github.ref_name }}
+        body: |
+          ## WebMessage iOS Tweak - ${{ github.ref_name }}
+          
+          **Package Version:** ${{ steps.package_info.outputs.version }}
+          **Package Size:** ${{ steps.package_info.outputs.size }}
+          
+          ### Installation
+          
+          1. Download WebMessage.deb below
+          2. Transfer to your jailbroken iOS device
+          3. Install with: sudo dpkg -i /tmp/WebMessage.deb
+          
+          ### Requirements
+          - iOS 12.0 or later
+          - Jailbroken device
+          - Dependencies: com.muirey03.libmryipc, mobilesubstrate, preferenceloader
+          
+          ### Compatibility
+          - iPhone 5s - iPhone 15 Pro Max
+          - iOS 12.0 - iOS 17.x
+          - arm64/arm64e architectures
+        draft: false
+        prerelease: false
+
+    - name: Upload .deb to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./output/WebMessage.deb
+        asset_name: WebMessage.deb
+        asset_content_type: application/vnd.debian.binary-package
