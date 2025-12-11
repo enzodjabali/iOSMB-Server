@@ -1,0 +1,36 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Build artifacts
+*.deb
+.theos/obj
+.theos/_/
+*.o
+*.dylib
+*.a
+
+# Xcode
+*.xcodeproj/xcuserdata
+*.xcodeproj/project.xcworkspace/xcuserdata
+*.xcworkspace/xcuserdata
+*.xcodeproj/project.xcworkspace/*.xcuserstate
+*.xcuserstate
+DerivedData/
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+._*
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+*~
