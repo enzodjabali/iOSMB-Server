@@ -1,4 +1,4 @@
-# Dockerfile for building WebMessage Sileo jailbreak tweak
+# Dockerfile for building iOSMB-Server Sileo jailbreak tweak
 # This builds the .deb package for iOS jailbroken devices
 
 FROM ubuntu:22.04
@@ -82,8 +82,8 @@ WORKDIR /build
 COPY . .
 
 # Copy the libmryipc library from the project to theos lib directory
-RUN if [ -f /build/WebMessage/Libraries/libmryipc.dylib ]; then \
-        cp /build/WebMessage/Libraries/libmryipc.dylib /opt/theos/lib/libmryipc.dylib; \
+RUN if [ -f /build/iOSMB-Server/Libraries/libmryipc.dylib ]; then \
+        cp /build/iOSMB-Server/Libraries/libmryipc.dylib /opt/theos/lib/libmryipc.dylib; \
     fi
 
 # Create a build script
@@ -91,21 +91,21 @@ RUN echo '#!/bin/bash\n\
 set -e\n\
 \n\
 echo "========================================"\n\
-echo "Building libwebmessage tweak..."\n\
+echo "Building libiosmb tweak..."\n\
 echo "========================================"\n\
 \n\
-# Build libwebmessage\n\
-cd /build/libwebmessage\n\
+# Build libiosmb\n\
+cd /build/libiosmb\n\
 make clean || true\n\
 make package FINALPACKAGE=1\n\
 \n\
 echo ""\n\
 echo "========================================"\n\
-echo "Building WebMessagePreferences bundle..."\n\
+echo "Building iOSMBPreferences bundle..."\n\
 echo "========================================"\n\
 \n\
-# Build WebMessagePreferences\n\
-cd /build/WebMessagePreferences\n\
+# Build iOSMBPreferences\n\
+cd /build/iOSMBPreferences\n\
 make clean || true\n\
 make FINALPACKAGE=1\n\
 \n\
@@ -115,28 +115,28 @@ echo "Copying built files to Package..."\n\
 echo "========================================"\n\
 \n\
 # Ensure directories exist\n\
-mkdir -p /build/WebMessage/Package/Library/MobileSubstrate/DynamicLibraries\n\
-mkdir -p /build/WebMessage/Package/Library/PreferenceBundles\n\
+mkdir -p /build/iOSMB-Server/Package/Library/MobileSubstrate/DynamicLibraries\n\
+mkdir -p /build/iOSMB-Server/Package/Library/PreferenceBundles\n\
 \n\
 # Remove old symlinks if they exist\n\
-rm -f /build/WebMessage/Package/Library/MobileSubstrate/DynamicLibraries/libwebmessage.dylib\n\
-rm -f /build/WebMessage/Package/Library/MobileSubstrate/DynamicLibraries/libwebmessage.plist\n\
-rm -f /build/WebMessage/Package/Library/PreferenceBundles/WebMessage.bundle\n\
+rm -f /build/iOSMB-Server/Package/Library/MobileSubstrate/DynamicLibraries/libiosmb.dylib\n\
+rm -f /build/iOSMB-Server/Package/Library/MobileSubstrate/DynamicLibraries/libiosmb.plist\n\
+rm -f /build/iOSMB-Server/Package/Library/PreferenceBundles/iOSMB-Server.bundle\n\
 \n\
-# Copy libwebmessage files\n\
-if [ -f /build/libwebmessage/.theos/obj/libwebmessage.dylib ]; then\n\
-    cp /build/libwebmessage/.theos/obj/libwebmessage.dylib /build/WebMessage/Package/Library/MobileSubstrate/DynamicLibraries/\n\
-elif [ -f /build/libwebmessage/.theos/obj/debug/libwebmessage.dylib ]; then\n\
-    cp /build/libwebmessage/.theos/obj/debug/libwebmessage.dylib /build/WebMessage/Package/Library/MobileSubstrate/DynamicLibraries/\n\
+# Copy libiosmb files\n\
+if [ -f /build/libiosmb/.theos/obj/libiosmb.dylib ]; then\n\
+    cp /build/libiosmb/.theos/obj/libiosmb.dylib /build/iOSMB-Server/Package/Library/MobileSubstrate/DynamicLibraries/\n\
+elif [ -f /build/libiosmb/.theos/obj/debug/libiosmb.dylib ]; then\n\
+    cp /build/libiosmb/.theos/obj/debug/libiosmb.dylib /build/iOSMB-Server/Package/Library/MobileSubstrate/DynamicLibraries/\n\
 fi\n\
 \n\
-cp /build/libwebmessage/libwebmessage.plist /build/WebMessage/Package/Library/MobileSubstrate/DynamicLibraries/\n\
+cp /build/libiosmb/libiosmb.plist /build/iOSMB-Server/Package/Library/MobileSubstrate/DynamicLibraries/\n\
 \n\
-# Copy WebMessage preferences bundle\n\
-if [ -d /build/WebMessagePreferences/.theos/obj/WebMessage.bundle ]; then\n\
-    cp -r /build/WebMessagePreferences/.theos/obj/WebMessage.bundle /build/WebMessage/Package/Library/PreferenceBundles/\n\
-elif [ -d /build/WebMessagePreferences/.theos/obj/debug/WebMessage.bundle ]; then\n\
-    cp -r /build/WebMessagePreferences/.theos/obj/debug/WebMessage.bundle /build/WebMessage/Package/Library/PreferenceBundles/\n\
+# Copy iOSMB-Server preferences bundle\n\
+if [ -d /build/iOSMBPreferences/.theos/obj/iOSMB-Server.bundle ]; then\n\
+    cp -r /build/iOSMBPreferences/.theos/obj/iOSMB-Server.bundle /build/iOSMB-Server/Package/Library/PreferenceBundles/\n\
+elif [ -d /build/iOSMBPreferences/.theos/obj/debug/iOSMB-Server.bundle ]; then\n\
+    cp -r /build/iOSMBPreferences/.theos/obj/debug/iOSMB-Server.bundle /build/iOSMB-Server/Package/Library/PreferenceBundles/\n\
 fi\n\
 \n\
 echo ""\n\
@@ -146,21 +146,21 @@ echo "========================================"\n\
 \n\
 # Build the final .deb package\n\
 cd /build\n\
-rm -f WebMessage.deb\n\
-dpkg-deb --root-owner-group -b WebMessage/Package WebMessage.deb\n\
+rm -f iOSMB-Server.deb\n\
+dpkg-deb --root-owner-group -b iOSMB-Server/Package iOSMB-Server.deb\n\
 \n\
 echo ""\n\
 echo "========================================"\n\
 echo "Build complete!"\n\
 echo "========================================"\n\
 echo ""\n\
-dpkg-deb --info WebMessage.deb\n\
+dpkg-deb --info iOSMB-Server.deb\n\
 echo ""\n\
 echo "Package size:"\n\
-ls -lh WebMessage.deb\n\
+ls -lh iOSMB-Server.deb\n\
 echo ""\n\
 echo "Package contents:"\n\
-dpkg-deb --contents WebMessage.deb\n\
+dpkg-deb --contents iOSMB-Server.deb\n\
 ' > /build/build.sh && chmod +x /build/build.sh
 
 # Set the default command

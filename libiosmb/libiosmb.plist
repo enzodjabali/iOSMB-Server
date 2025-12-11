@@ -3,7 +3,7 @@
 		Bundles = (
 			"com.apple.MobileSMS",
 			"com.apple.springboard",
-			"com.sgtaziz.webmessage",
+			"com.enzodjabali.iosmb-server",
 		);
 	};
 }

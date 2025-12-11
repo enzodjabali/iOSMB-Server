@@ -1,0 +1,14 @@
+Package: com.enzodjabali.iosmb-server
+Name: iOSMB-Server
+Version: 1.0.0
+Description: iOS Messages Bridge - Your messages, on every device.
+Section: System
+Depends: firmware (>= 12.0), openssl, com.muirey03.libmryipc, mobilesubstrate, preferenceloader
+Conflicts: 
+Replaces: 
+Priority: optional
+Architecture: iphoneos-arm
+Author: enzodjabali
+Homepage: https://github.com/enzodjabali/iOSMB-Server
+Depiction: 
+Maintainer: Enzo Djabali <enzo@djabali.dev>

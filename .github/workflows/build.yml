@@ -21,20 +21,20 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t webmessage-builder:latest .
+        docker build -t iosmb-builder:latest .
 
     - name: Build .deb package
       run: |
-        docker run --name webmessage-build-container webmessage-builder:latest /build/build.sh
+        docker run --name iosmb-build-container iosmb-builder:latest /build/build.sh
         mkdir -p output
-        docker cp webmessage-build-container:/build/WebMessage.deb ./output/WebMessage.deb
-        docker rm webmessage-build-container
+        docker cp iosmb-build-container:/build/iOSMB-Server.deb ./output/iOSMB-Server.deb
+        docker rm iosmb-build-container
 
     - name: Get package info
       id: package_info
       run: |
-        VERSION=$(dpkg-deb -f output/WebMessage.deb Version)
-        SIZE=$(ls -lh output/WebMessage.deb | awk '{print $5}')
+        VERSION=$(dpkg-deb -f output/iOSMB-Server.deb Version)
+        SIZE=$(ls -lh output/iOSMB-Server.deb | awk '{print $5}')
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "size=$SIZE" >> $GITHUB_OUTPUT
         echo "Package version: $VERSION"
@@ -47,18 +47,18 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref_name }}
-        release_name: WebMessage ${{ github.ref_name }}
+        release_name: iOSMB-Server ${{ github.ref_name }}
         body: |
-          ## WebMessage iOS Tweak - ${{ github.ref_name }}
+          ## iOSMB-Server iOS Tweak - ${{ github.ref_name }}
           
           **Package Version:** ${{ steps.package_info.outputs.version }}
           **Package Size:** ${{ steps.package_info.outputs.size }}
           
           ### Installation
           
-          1. Download WebMessage.deb below
+          1. Download iOSMB-Server.deb below
           2. Transfer to your jailbroken iOS device
-          3. Install with: sudo dpkg -i /tmp/WebMessage.deb
+          3. Install with: sudo dpkg -i /tmp/iOSMB-Server.deb
           
           ### Requirements
           - iOS 12.0 or later
@@ -78,6 +78,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./output/WebMessage.deb
-        asset_name: WebMessage.deb
+        asset_path: ./output/iOSMB-Server.deb
+        asset_name: iOSMB-Server.deb
         asset_content_type: application/vnd.debian.binary-package

@@ -7,7 +7,7 @@
 #import <MRYIPCCenter.h>
 #import <spawn.h>
 
-@interface saWebMessageRootListController : PSListController
+@interface iOSMBRootListController : PSListController
   @property (nonatomic, retain) NSMutableDictionary *savedSpecifiers;
 @end
 
