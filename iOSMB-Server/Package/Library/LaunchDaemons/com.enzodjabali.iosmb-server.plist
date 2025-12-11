@@ -5,15 +5,15 @@
 	<key>KeepAlive</key>
 	<true/>
 	<key>Label</key>
-	<string>com.sgtaziz.webmessage</string>
+	<string>com.enzodjabali.iosmb-server</string>
 	<key>MachServices</key>
 	<dict>
-		<key>com.sgtaziz.webmessage</key>
+		<key>com.enzodjabali.iosmb-server</key>
 		<true/>
 	</dict>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/usr/bin/WebMessage</string>
+		<string>/usr/bin/iOSMB-Server</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>

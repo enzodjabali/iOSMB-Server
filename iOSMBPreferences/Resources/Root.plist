@@ -20,9 +20,9 @@
 			<key>placeholder</key>
 			<string>None</string>
 			<key>defaults</key>
-			<string>com.sgtaziz.webmessage</string>
+			<string>com.enzodjabali.iosmb-server</string>
 			<key>PostNotification</key>
-			<string>com.sgtaziz.webmessage.settingschanged</string>
+			<string>com.enzodjabali.iosmb-server.settingschanged</string>
 			<key>id</key>
 			<string>password</string>
 		</dict>
@@ -38,9 +38,9 @@
 			<key>placeholder</key>
 			<string>8180</string>
 			<key>defaults</key>
-			<string>com.sgtaziz.webmessage</string>
+			<string>com.enzodjabali.iosmb-server</string>
 			<key>PostNotification</key>
-			<string>com.sgtaziz.webmessage.settingschanged</string>
+			<string>com.enzodjabali.iosmb-server.settingschanged</string>
 			<key>id</key>
 			<string>port</string>
 			<key>default</key>
@@ -52,13 +52,13 @@
 			<key>default</key>
 			<true/>
 			<key>defaults</key>
-			<string>com.sgtaziz.webmessage</string>
+			<string>com.enzodjabali.iosmb-server</string>
 			<key>id</key>
 			<string>ssl</string>
 			<key>label</key>
 			<string>Enable SSL</string>
 			<key>PostNotification</key>
-			<string>com.sgtaziz.webmessage.settingschanged</string>
+			<string>com.enzodjabali.iosmb-server.settingschanged</string>
 		</dict>
 <!--    <dict>-->
 <!--      <key>cell</key>-->
@@ -76,13 +76,13 @@
 <!--      <key>default</key>-->
 <!--      <true/>-->
 <!--      <key>defaults</key>-->
-<!--      <string>com.sgtaziz.webmessage</string>-->
+<!--      <string>com.enzodjabali.iosmb-server</string>-->
 <!--      <key>id</key>-->
 <!--      <string>sendnotificationhook</string>-->
 <!--      <key>label</key>-->
 <!--      <string>Hook sending texts</string>-->
 <!--      <key>PostNotification</key>-->
-<!--      <string>com.sgtaziz.webmessage.settingschanged</string>-->
+<!--      <string>com.enzodjabali.iosmb-server.settingschanged</string>-->
 <!--    </dict>-->
 		<dict>
 			<key>cell</key>

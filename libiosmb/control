@@ -1,0 +1,8 @@
+Package: com.enzodjabali.libiosmb
+Name: libiosmb
+Version: 1.0.0
+Architecture: iphoneos-arm
+Description: iOSMB MobileSubstrate tweak for Messages integration
+Maintainer: Enzo Djabali <enzo@djabali.dev>
+Author: Enzo Djabali
+Section: Tweaks

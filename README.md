@@ -1,22 +1,22 @@
-# WebMessage Server
+# iOSMB-Server Server
 
 iOS tweak companion for iOSMB-Client.
 
-WebMessage allows you to access your iMessages on any device through a web interface.
+iOSMB-Server allows you to access your iMessages on any device through a web interface.
 
 ## What This Builds
 
-- **libwebmessage.dylib**: MobileSubstrate tweak that hooks into Messages app
+- **libiosmb.dylib**: MobileSubstrate tweak that hooks into Messages app
 
-- **WebMessage binary**: Main server application  * This package has not been tested against iOS 12 fully. It is still in its early stages.
+- **iOSMB-Server binary**: Main server application  * This package has not been tested against iOS 12 fully. It is still in its early stages.
 
-- **WebMessage.bundle**: Settings/preferences UI  
+- **iOSMB-Server.bundle**: Settings/preferences UI  
 
 - **Package**: Complete .deb installer for jailbroken iOS devices
 
 ## Description
 
-WebMessage is a tweak exposing a REST API (and a WebSocket) from your phone, allowing for SMS and iMessage functionality. To work, the client used and the phone must be on the same network. Alternatively, tunneling can also be used.
+iOSMB-Server is a tweak exposing a REST API (and a WebSocket) from your phone, allowing for SMS and iMessage functionality. To work, the client used and the phone must be on the same network. Alternatively, tunneling can also be used.
 
 ## Building
 
@@ -40,7 +40,7 @@ The current features are as follows:
 
 More features are planned in the future, such as reactions, read receipts, and more.
 
-The `.deb` package will be created in `output/WebMessage.deb` (~832KB)
+The `.deb` package will be created in `output/iOSMB-Server.deb` (~832KB)
 
 ## Installation
 
@@ -50,7 +50,7 @@ The `.deb` package will be created in `output/WebMessage.deb` (~832KB)
 
 ```bash### Option 1: Docker Build (Recommended for Linux/Cross-platform)
 
-scp output/WebMessage.deb mobile@YOUR-IPHONE-IP:/tmp/
+scp output/iOSMB-Server.deb mobile@YOUR-IPHONE-IP:/tmp/
 
 ```The easiest way to build the .deb package on any platform:
 
@@ -62,7 +62,7 @@ scp output/WebMessage.deb mobile@YOUR-IPHONE-IP:/tmp/
 
 ssh mobile@YOUR-IPHONE-IP```
 
-sudo dpkg -i /tmp/WebMessage.deb
+sudo dpkg -i /tmp/iOSMB-Server.deb
 
 sudo apt-get install -f  # Fix dependencies if neededThe built package will be available in the `output/` directory.
 
@@ -125,7 +125,7 @@ chmod +x build-docker.sh
 **Build fails with errors?**  
 Remove old Docker images and rebuild:
 ```bash
-docker rmi webmessage-builder:latest
+docker rmi iosmb-builder:latest
 ./build-docker.sh
 ```
 

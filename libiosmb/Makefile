@@ -6,12 +6,12 @@ INSTALL_TARGET_PROCESSES = MobileSMS SpringBoard
 
 include $(THEOS)/makefiles/common.mk
 
-TWEAK_NAME = libwebmessage
+TWEAK_NAME = libiosmb
 
-libwebmessage_FILES = Tweak.x
-libwebmessage_CFLAGS = -fobjc-arc
-libwebmessage_LIBRARIES = mryipc c++
-libwebmessage_LDFLAGS = -lc++
+libiosmb_FILES = Tweak.x
+libiosmb_CFLAGS = -fobjc-arc
+libiosmb_LIBRARIES = mryipc c++
+libiosmb_LDFLAGS = -lc++
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 

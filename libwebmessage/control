@@ -1,8 +1,0 @@
-Package: com.sgtaziz.libwebmessage
-Name: libwebmessage
-Version: 0.0.1
-Architecture: iphoneos-arm
-Description: An awesome MobileSubstrate tweak!
-Maintainer: Aziz H
-Author: Aziz H
-Section: Tweaks

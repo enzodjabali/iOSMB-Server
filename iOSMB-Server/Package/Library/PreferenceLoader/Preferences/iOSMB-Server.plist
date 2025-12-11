@@ -5,17 +5,17 @@
   <key>entry</key>
   <dict>
     <key>bundle</key>
-    <string>WebMessage</string>
+    <string>iOSMB-Server</string>
     <key>cell</key>
     <string>PSLinkCell</string>
     <key>detail</key>
-    <string>saWebMessageRootListController</string>
+    <string>iOSMBRootListController</string>
     <key>icon</key>
-    <string>WebMessageIcon.png</string>
+    <string>iOSMBIcon.png</string>
     <key>isController</key>
     <true/>
     <key>label</key>
-    <string>WebMessage</string>
+    <string>iOSMB-Server</string>
   </dict>
 </dict>
 </plist>
