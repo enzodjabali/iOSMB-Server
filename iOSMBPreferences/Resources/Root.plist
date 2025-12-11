@@ -36,7 +36,7 @@
 			<key>isNumeric</key>
 			<true/>
 			<key>placeholder</key>
-			<string>8180</string>
+			<string>8190</string>
 			<key>defaults</key>
 			<string>com.enzodjabali.iosmb-server</string>
 			<key>PostNotification</key>
@@ -44,7 +44,7 @@
 			<key>id</key>
 			<string>port</string>
 			<key>default</key>
-			<string>8180</string>
+			<string>8190</string>
 		</dict>
 		<dict>
 			<key>cell</key>

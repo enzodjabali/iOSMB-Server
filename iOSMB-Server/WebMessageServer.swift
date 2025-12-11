@@ -32,12 +32,12 @@ public class WebMessageServer: NSObject {
 
 public extension WebMessageServer {
   func start() {
-    port = 8180
+    port = 8190
     enableSSL = true
     
     if let dict = NSDictionary(contentsOfFile: "/User/Library/Preferences/com.sgtaziz.webmessage.plist") {
       if let portDic = dict["port"] as? String {
-        let portInt = Int(portDic) ?? 8180
+        let portInt = Int(portDic) ?? 8190
         port = portInt
       }
       if let sslDict = dict["ssl"] as? String {
