@@ -101,7 +101,7 @@
   NSString *path = [NSString stringWithFormat:@"/User/Library/Preferences/%@.plist", specifier.properties[@"defaults"]];
   NSMutableDictionary *settings = [NSMutableDictionary dictionary];
   [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:path]];
-  id defaultPort = @8180;
+  id defaultPort = @8190;
   
   if ([specifier.properties[@"id"] isEqual:@"port"] && ![self isPort:value]) {
     perfValue = settings[@"port"] ?: defaultPort;

@@ -249,7 +249,7 @@
 + (BOOL)isServerRunning {
   NSMutableDictionary *settings = [NSMutableDictionary dictionary];
   [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:@"/User/Library/Preferences/com.sgtaziz.webmessage.plist"]];
-  id defaultPort = @8180;
+  id defaultPort = @8190;
   
   NSString *address = [NSString stringWithFormat:@"localhost:%@", settings[@"port"] ?: defaultPort];
   
@@ -275,7 +275,7 @@
   if ([WebMessageIPC isServerRunning]) {
     NSMutableDictionary *settings = [NSMutableDictionary dictionary];
     [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:@"/User/Library/Preferences/com.sgtaziz.webmessage.plist"]];
-    id defaultPort = @8180;
+    id defaultPort = @8190;
     BOOL useSSL = settings[@"ssl"] ? [settings[@"ssl"] boolValue] : YES;
     NSString* protocol = useSSL ? @"https" : @"http";
     
