@@ -49,7 +49,7 @@
 }
 
 - (void)daemonStop {
-  MRYIPCCenter *center = [MRYIPCCenter centerNamed:@"com.sgtaziz.webmessagelistener"];
+  MRYIPCCenter *center = [MRYIPCCenter centerNamed:@"com.enzodjabali.iosmb-server-listener"];
   [center callExternalVoidMethod:@selector(stopWebserver:) withArguments:nil];
 }
 
@@ -110,7 +110,7 @@
   [settings setObject:perfValue forKey:specifier.properties[@"id"]];
   [settings writeToFile:path atomically:YES];
   
-  CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.sgtaziz.webmessage.settingschanged"), NULL, NULL, YES);
+  CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.enzodjabali.iosmb-server.settingschanged"), NULL, NULL, YES);
   
   [self daemonStop];
   

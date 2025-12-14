@@ -32,7 +32,7 @@
 
 /// The whole purpose of this is to be able to hook onto __kIM... notifications. Though still doesn't work for __kIMChatRegistryMessageSentNotification, but it's no longer needed!
 - (void)initController {
-  _center = [MRYIPCCenter centerNamed:@"com.sgtaziz.webmessage"];
+  _center = [MRYIPCCenter centerNamed:@"com.enzodjabali.iosmb-server"];
   [_center addTarget:self action:@selector(sendText:)];
   [_center addTarget:self action:@selector(setAsRead:)];
   [_center addTarget:self action:@selector(deleteChat:)];
@@ -128,7 +128,7 @@
       }
         
       if ([WebMessageIPC isServerRunning]) {
-        MRYIPCCenter *center = [MRYIPCCenter centerNamed:@"com.sgtaziz.webmessagelistener"];
+        MRYIPCCenter *center = [MRYIPCCenter centerNamed:@"com.enzodjabali.iosmb-server-listener"];
         [center callExternalVoidMethod:@selector(handleReceivedTextWithCallback:) withArguments:msgGUID];
       }
     } else {
@@ -241,14 +241,14 @@
   NSString* guid = [msg guid];
 
   if ([WebMessageIPC isServerRunning]) {
-    MRYIPCCenter *center = [MRYIPCCenter centerNamed:@"com.sgtaziz.webmessagelistener"];
+    MRYIPCCenter *center = [MRYIPCCenter centerNamed:@"com.enzodjabali.iosmb-server-listener"];
     [center callExternalVoidMethod:@selector(handleReceivedTextWithCallback:) withArguments:guid];
   }
 }
 
 + (BOOL)isServerRunning {
   NSMutableDictionary *settings = [NSMutableDictionary dictionary];
-  [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:@"/User/Library/Preferences/com.sgtaziz.webmessage.plist"]];
+  [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:@"/User/Library/Preferences/com.enzodjabali.iosmb-server.plist"]];
   id defaultPort = @8190;
   
   NSString *address = [NSString stringWithFormat:@"localhost:%@", settings[@"port"] ?: defaultPort];
@@ -274,7 +274,7 @@
   
   if ([WebMessageIPC isServerRunning]) {
     NSMutableDictionary *settings = [NSMutableDictionary dictionary];
-    [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:@"/User/Library/Preferences/com.sgtaziz.webmessage.plist"]];
+    [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:@"/User/Library/Preferences/com.enzodjabali.iosmb-server.plist"]];
     id defaultPort = @8190;
     BOOL useSSL = settings[@"ssl"] ? [settings[@"ssl"] boolValue] : YES;
     NSString* protocol = useSSL ? @"https" : @"http";
@@ -309,7 +309,7 @@
     NSString* guid = [message guid];
     
     if (handleID != nil && [WebMessageIPC isServerRunning]) {
-      MRYIPCCenter *center = [MRYIPCCenter centerNamed:@"com.sgtaziz.webmessagelistener"];
+      MRYIPCCenter *center = [MRYIPCCenter centerNamed:@"com.enzodjabali.iosmb-server-listener"];
       NSDictionary* args = @{ @"chatId": handleID, @"guid": guid, @"read": @([dateRead timeIntervalSince1970] * 1000.0), @"delivered": @([dateDelivered timeIntervalSince1970] * 1000.0) };
       [center callExternalVoidMethod:@selector(handleSetMessageAsRead:) withArguments:args];
     }
@@ -345,7 +345,7 @@
     __block NSString* sender = [self sender];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
       if ([WebMessageIPC isServerRunning] && sender != nil) {
-        MRYIPCCenter *center = [MRYIPCCenter centerNamed:@"com.sgtaziz.webmessagelistener"];
+        MRYIPCCenter *center = [MRYIPCCenter centerNamed:@"com.enzodjabali.iosmb-server-listener"];
         [center callExternalVoidMethod:@selector(handleChangeTypingIndicator:) withArguments:@{ @"chat_id": sender, @"typing": @NO }];
       }
     });
@@ -361,7 +361,7 @@
     __block NSString* sender = [self sender];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
       if ([WebMessageIPC isServerRunning] && sender != nil) {
-        MRYIPCCenter *center = [MRYIPCCenter centerNamed:@"com.sgtaziz.webmessagelistener"];
+        MRYIPCCenter *center = [MRYIPCCenter centerNamed:@"com.enzodjabali.iosmb-server-listener"];
         [center callExternalVoidMethod:@selector(handleChangeTypingIndicator:) withArguments:@{ @"chat_id": sender, @"typing": @YES }];
       }
     });
@@ -376,7 +376,7 @@
   NSString *chat_id = [self chatIdentifier];
   dispatch_async(dispatch_get_main_queue(), ^{
     if ([WebMessageIPC isServerRunning]) {
-      MRYIPCCenter *center = [MRYIPCCenter centerNamed:@"com.sgtaziz.webmessagelistener"];
+      MRYIPCCenter *center = [MRYIPCCenter centerNamed:@"com.enzodjabali.iosmb-server-listener"];
       [center callExternalVoidMethod:@selector(handleChatRemoved:) withArguments:chat_id];
     }
   });
@@ -408,7 +408,7 @@
 //      NSString* msgGUID = [msg guid];
 //
 //      if ([WebMessageIPC isServerRunning]) {
-//        MRYIPCCenter *center = [MRYIPCCenter centerNamed:@"com.sgtaziz.webmessagelistener"];
+//        MRYIPCCenter *center = [MRYIPCCenter centerNamed:@"com.enzodjabali.iosmb-server-listener"];
 //        [center callExternalVoidMethod:@selector(handleReceivedTextWithCallback:) withArguments:msgGUID];
 //      }
 //    });

@@ -1,10 +1,3 @@
-//
-//  IPCSender.m
-//  WebMessage
-//
-//  Created by Aziz Hasanain on 12/4/20. Modified from libsmserver
-//
-
 #import <Foundation/Foundation.h>
 #import "IPCSender.h"
 
@@ -12,7 +5,7 @@
 
 - (id)init {
   if (self = [super init]) {
-    self.center = [MRYIPCCenter centerNamed:@"com.sgtaziz.webmessage"];
+    self.center = [MRYIPCCenter centerNamed:@"com.enzodjabali.iosmb-server"];
   }
   
   return self;
@@ -63,7 +56,7 @@
 
 - (instancetype)init {
   if ((self = [super init])) {
-    _center = [MRYIPCCenter centerNamed:@"com.sgtaziz.webmessagelistener"];
+    _center = [MRYIPCCenter centerNamed:@"com.enzodjabali.iosmb-server-listener"];
     [_center addTarget:self action:@selector(handleReceivedTextWithCallback:)];
     [_center addTarget:self action:@selector(stopWebserver:)];
     [_center addTarget:self action:@selector(handleSetMessageAsRead:)];

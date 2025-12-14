@@ -35,7 +35,7 @@ public extension WebMessageServer {
     port = 8190
     enableSSL = true
     
-    if let dict = NSDictionary(contentsOfFile: "/User/Library/Preferences/com.sgtaziz.webmessage.plist") {
+    if let dict = NSDictionary(contentsOfFile: "/User/Library/Preferences/com.enzodjabali.iosmb-server.plist") {
       if let portDic = dict["port"] as? String {
         let portInt = Int(portDic) ?? 8190
         port = portInt
@@ -210,7 +210,7 @@ public class HTTPAuthHandler: HTTPRequestHandler {
       }
     }
     
-    if let dict = NSDictionary(contentsOfFile: "/User/Library/Preferences/com.sgtaziz.webmessage.plist") {
+    if let dict = NSDictionary(contentsOfFile: "/User/Library/Preferences/com.enzodjabali.iosmb-server.plist") {
       if let passwordDict = dict["password"] as? String {
         password = passwordDict
       }

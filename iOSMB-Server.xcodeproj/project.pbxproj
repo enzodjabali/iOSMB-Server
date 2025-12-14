@@ -691,7 +691,7 @@
 				MonkeyDevInstallOnProfiling = YES;
 				MonkeyDevTheosPath = /Users/aziz/theos;
 				MonkeyDevkillProcessOnInstall = SpringBoard;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sgtaziz.webmessage;
+				PRODUCT_BUNDLE_IDENTIFIER = com.enzodjabali.iosmb-server;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "WebMessage/WebMessage-Bridging-Header.h";
@@ -743,7 +743,7 @@
 				MonkeyDevInstallOnProfiling = YES;
 				MonkeyDevTheosPath = /Users/aziz/theos;
 				MonkeyDevkillProcessOnInstall = SpringBoard;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sgtaziz.webmessage;
+				PRODUCT_BUNDLE_IDENTIFIER = com.enzodjabali.iosmb-server;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "WebMessage/WebMessage-Bridging-Header.h";

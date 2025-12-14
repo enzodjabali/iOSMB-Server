@@ -1,2 +1,2 @@
 #!/bin/sh
-launchctl unload /Library/LaunchDaemons/com.sgtaziz.webmessage.plist 2>&1 > /dev/null
+launchctl unload /Library/LaunchDaemons/com.enzodjabali.iosmb-server.plist 2>&1 > /dev/null
