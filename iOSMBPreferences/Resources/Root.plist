@@ -96,7 +96,7 @@
       <key>cell</key>
       <string>PSButtonCell</string>
       <key>label</key>
-      <string>Restart WebMessage</string>
+      <string>Restart iOSMB-Server</string>
       <key>action</key>
       <string>stopDaemon</string>
     </dict>
@@ -110,6 +110,6 @@
     </dict>
 	</array>
 	<key>title</key>
-	<string>WebMessage</string>
+	<string>iOSMB-Server</string>
 </dict>
 </plist>

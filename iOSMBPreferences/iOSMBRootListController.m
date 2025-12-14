@@ -56,7 +56,7 @@
 - (void)respring {
   pid_t pid;
   const char *args[] = {"sbreload", NULL, NULL, NULL};
-  posix_spawn(&pid, "usr/bin/sbreload", NULL, NULL, (char *const *)args, NULL);
+  posix_spawn(&pid, "/usr/bin/sbreload", NULL, NULL, (char *const *)args, NULL);
 }
 
 - (NSString*)getIPAddress {
@@ -89,7 +89,7 @@
 }
 
 - (id)readPreferenceValue:(PSSpecifier*)specifier {
-  NSString *path = [NSString stringWithFormat:@"/User/Library/Preferences/%@.plist", specifier.properties[@"defaults"]];
+  NSString *path = [NSString stringWithFormat:@"/var/mobile/Library/Preferences/%@.plist", specifier.properties[@"defaults"]];
   NSMutableDictionary *settings = [NSMutableDictionary dictionary];
   [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:path]];
   return (settings[specifier.properties[@"id"]]) ?: specifier.properties[@"default"];
@@ -98,7 +98,7 @@
 - (void)setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier {
   NSString* perfValue = [NSString stringWithFormat:@"%@", value];
   
-  NSString *path = [NSString stringWithFormat:@"/User/Library/Preferences/%@.plist", specifier.properties[@"defaults"]];
+  NSString *path = [NSString stringWithFormat:@"/var/mobile/Library/Preferences/%@.plist", specifier.properties[@"defaults"]];
   NSMutableDictionary *settings = [NSMutableDictionary dictionary];
   [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:path]];
   id defaultPort = @8190;
