@@ -4,6 +4,6 @@
 launchctl unload /Library/LaunchDaemons/com.enzodjabali.iosmb-server.plist 2>&1 > /dev/null
 
 #Remove generated certificates
-rm /Library/Application\ Support/iOSMB-Server/webmessage.*
+rm /Library/Application\ Support/iOSMB-Server/iosmb.*
 rm /Library/Application\ Support/iOSMB-Server/passphrase
 

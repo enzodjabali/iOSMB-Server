@@ -66,17 +66,17 @@ public extension WebMessageServer {
 extension WebMessageServer {
   private func loadCertificates() {
     
-    if let passphraseURL = URL(string: "file:///Library/Application%20Support/WebMessage/passphrase") {
+    if let passphraseURL = URL(string: "file:///Library/Application%20Support/iOSMB-Server/passphrase") {
        do {
         let passphrase = try String(contentsOf: passphraseURL).trimmingCharacters(in: .whitespacesAndNewlines)
 
         // Load the P12 identity package from the bundle
-        if let identityURL = URL(string: "file:///Library/Application%20Support/WebMessage/webmessage.p12") {
+        if let identityURL = URL(string: "file:///Library/Application%20Support/iOSMB-Server/iosmb.p12") {
           identity = CertificateIdentity(p12URL: identityURL, passphrase: passphrase)
         }
 
         // Load the Certificate Authority certificate from the bundle
-        if let caCertificateURL = URL(string: "file:///Library/Application%20Support/WebMessage/webmessage.der") {
+        if let caCertificateURL = URL(string: "file:///Library/Application%20Support/iOSMB-Server/iosmb.der") {
           caCertificate = Certificate(derURL: caCertificateURL)
         }
        } catch {}
