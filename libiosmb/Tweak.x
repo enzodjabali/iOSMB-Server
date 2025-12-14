@@ -248,7 +248,7 @@
 
 + (BOOL)isServerRunning {
   NSMutableDictionary *settings = [NSMutableDictionary dictionary];
-  [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/com.enzodjabali.iosmb-server.plist"]];
+  [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:@"/User/Library/Preferences/com.enzodjabali.iosmb-server.plist"]];
   id defaultPort = @8190;
   
   NSString *address = [NSString stringWithFormat:@"localhost:%@", settings[@"port"] ?: defaultPort];
@@ -274,7 +274,7 @@
   
   if ([WebMessageIPC isServerRunning]) {
     NSMutableDictionary *settings = [NSMutableDictionary dictionary];
-    [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/com.enzodjabali.iosmb-server.plist"]];
+    [settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:@"/User/Library/Preferences/com.enzodjabali.iosmb-server.plist"]];
     id defaultPort = @8190;
     BOOL useSSL = settings[@"ssl"] ? [settings[@"ssl"] boolValue] : YES;
     NSString* protocol = useSSL ? @"https" : @"http";
@@ -399,7 +399,7 @@
 //%hook NSNotificationCenter
 //// This doesn't hook until first text is sent. Also causes crashes with some setups
 //- (void)postNotificationName:(NSString *)notificationName object:(id)notificationSender userInfo:(NSDictionary *)userInfo {
-//  NSDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/com.sgtaziz.webmessage.plist"];
+//  NSDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:@"/User/Library/Preferences/com.sgtaziz.webmessage.plist"];
 //  BOOL enableHook = settings[@"sendnotificationhook"] ? [settings[@"sendnotificationhook"] boolValue] : YES;
 //
 //  if (enableHook && [notificationName isEqualToString:@"__kIMChatRegistryMessageSentNotification"]) {

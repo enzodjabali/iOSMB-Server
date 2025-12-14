@@ -32,14 +32,10 @@ public class WebMessageServer: NSObject {
 
 public extension WebMessageServer {
   func start() {
-    // Set defaults
     port = 8190
     enableSSL = true
     
-    let prefsPath = "/var/mobile/Library/Preferences/com.enzodjabali.iosmb-server.plist"
-    
-    // Read existing preferences or create defaults
-    if let dict = NSDictionary(contentsOfFile: prefsPath) as? [String: Any] {
+    if let dict = NSDictionary(contentsOfFile: "/User/Library/Preferences/com.enzodjabali.iosmb-server.plist") {
       if let portDic = dict["port"] as? String {
         let portInt = Int(portDic) ?? 8190
         port = portInt
@@ -47,14 +43,6 @@ public extension WebMessageServer {
       if let sslDict = dict["ssl"] as? String {
         enableSSL = sslDict == "1"
       }
-    } else {
-      // Create default preferences file if it doesn't exist
-      let defaults: [String: Any] = [
-        "port": "8190",
-        "ssl": "1",
-        "password": ""
-      ]
-      (defaults as NSDictionary).write(toFile: prefsPath, atomically: true)
     }
     
     loadCertificates()
@@ -222,7 +210,7 @@ public class HTTPAuthHandler: HTTPRequestHandler {
       }
     }
     
-    if let dict = NSDictionary(contentsOfFile: "/var/mobile/Library/Preferences/com.enzodjabali.iosmb-server.plist") {
+    if let dict = NSDictionary(contentsOfFile: "/User/Library/Preferences/com.enzodjabali.iosmb-server.plist") {
       if let passwordDict = dict["password"] as? String {
         password = passwordDict
       }
