@@ -1,90 +1,106 @@
 #import <Foundation/Foundation.h>
 #import "IPCSender.h"
 
+// Stub implementation for standalone builds (without MRYIPCCenter dependency)
+#define STANDALONE_BUILD 1
+
 @implementation IPCSender
 
 - (id)init {
   if (self = [super init]) {
+#ifndef STANDALONE_BUILD
     self.center = [MRYIPCCenter centerNamed:@"com.enzodjabali.iosmb-server"];
+#endif
   }
   
   return self;
 }
 
 - (void)sendFakeText {
+#ifndef STANDALONE_BUILD
   [self.center callExternalVoidMethod:@selector(sendText:) withArguments:@{ @"text": @"", @"subject": @"", @"address": @"", @"attachment": @[] }];
+#endif
 }
 
 - (void)sendText:(NSString *)text withSubject:(NSString *)subject toAddress:(NSString *)address withAttachments:(NSArray *)paths {
+#ifndef STANDALONE_BUILD
   [self.center callExternalVoidMethod:@selector(sendText:) withArguments:@{ @"text": text, @"subject": subject, @"address": address, @"attachment": paths }];
+#endif
 }
 
 - (void)sendReaction:(NSNumber *)reactionId forGuid:(NSString *)guid forChatId:(NSString *)chat_id forPart:(NSNumber *)part {
+#ifndef STANDALONE_BUILD
   [self.center callExternalVoidMethod:@selector(sendReaction:) withArguments:@{ @"reactionId": reactionId, @"guid": guid, @"chat_id": chat_id, @"part": part }];
+#endif
 }
 
 - (void)setIsLocallyTyping:(bool)isTyping forChatId:(NSString *)chat_id {
+#ifndef STANDALONE_BUILD
   [self.center callExternalVoidMethod:@selector(setIsLocallyTyping:) withArguments:@{ @"chat_id": chat_id, @"typing": @(isTyping) }];
+#endif
 }
 
 - (void)deleteChat:(NSString *)chat_id {
+#ifndef STANDALONE_BUILD
   [self.center callExternalVoidMethod:@selector(deleteChat:) withArguments:@{ @"chat": chat_id }];
+#endif
 }
 
 - (void)setAsRead:(NSString *)chat_id {
-  NSArray* chats = [chat_id componentsSeparatedByString:@","]; /// To allow marking multiple convos as read
+#ifndef STANDALONE_BUILD
+  NSArray* chats = [chat_id componentsSeparatedByString:@","]; 
   for (NSString* chat in chats) {
     [self.center callExternalVoidMethod:@selector(setAsRead:) withArguments:chat];
   }
+#endif
 }
 
 @end
 
 
 @implementation IPCWatcher {
+#ifndef STANDALONE_BUILD
   MRYIPCCenter* _center;
+#endif
 }
 
-+ (instancetype)sharedInstance {
-  static dispatch_once_t onceToken = 0;
-  __strong static IPCWatcher* sharedInstance = nil;
-  dispatch_once(&onceToken, ^{
-    sharedInstance = [[self alloc] init];
-  });
-  return sharedInstance;
-}
-
-- (instancetype)init {
-  if ((self = [super init])) {
+-(id)initWithCallback:(void(^)(NSString *))callback 
+  withServerStopCallback:(void(^)(id))callbackStop
+  withSetMessageAsReadCallback:(void(^)(NSDictionary *))readCallback
+  withRemoveChatCallback:(void(^)(NSString *))removeChatCallback {
+  if (self = [super init]) {
+#ifndef STANDALONE_BUILD
     _center = [MRYIPCCenter centerNamed:@"com.enzodjabali.iosmb-server-listener"];
-    [_center addTarget:self action:@selector(handleReceivedTextWithCallback:)];
-    [_center addTarget:self action:@selector(stopWebserver:)];
-    [_center addTarget:self action:@selector(handleSetMessageAsRead:)];
-    [_center addTarget:self action:@selector(handleChatRemoved:)];
-    [_center addTarget:self action:@selector(handleChangeTypingIndicator:)];
+    
+    self.setTexts = callback;
+    self.stopWebserver = callbackStop;
+    self.setMessageAsRead = readCallback;
+    self.removeChat = removeChatCallback;
+    
+    [_center addTarget:self action:@selector(listener:)];
+    [_center addTarget:self action:@selector(listenerStop:)];
+    [_center addTarget:self action:@selector(listenerSetAsRead:)];
+    [_center addTarget:self action:@selector(listenerRemoveChat:)];
+#endif
   }
+  
   return self;
 }
 
-- (void)handleReceivedTextWithCallback:(NSString *)guid {
-  _setTexts(guid);
+-(void)listener:(NSString*)text {
+  self.setTexts(text);
 }
 
-- (void)stopWebserver:(id)arg {
-  _stopWebserver(arg);
+-(void)listenerStop:(id)val {
+  self.stopWebserver(val);
 }
 
-- (void)handleSetMessageAsRead:(NSDictionary *)args {
-  _setMessageAsRead(args);
+-(void)listenerSetAsRead:(NSDictionary*)dict {
+  self.setMessageAsRead(dict);
 }
 
-- (void)handleChatRemoved:(NSString *)chat_id {
-  _removeChat(chat_id);
-}
-
-- (void)handleChangeTypingIndicator:(NSDictionary *)args {
-  _setTypingIndicator(args);
+-(void)listenerRemoveChat:(NSString*)chat_id {
+  self.removeChat(chat_id);
 }
 
 @end
-

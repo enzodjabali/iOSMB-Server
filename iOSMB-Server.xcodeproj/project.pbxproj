@@ -100,10 +100,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F9FC997257133BF0014E7CC /* SQLite in Frameworks */,
-				8F95B1D7257A8C090027112F /* libmryipc.dylib in Frameworks */,
 				8F9FC98C257116240014E7CC /* Telegraph in Frameworks */,
 				8F95B206257BBE540027112F /* SwiftyJSON in Frameworks */,
-				8F95B203257A90650027112F /* libwebmessage.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,7 +247,7 @@
 				8F95B1D8257A8C510027112F /* IPCSender.h */,
 				8F1462A4258CEF9A00A5C80F /* kern_memorystatus.h */,
 			);
-			path = WebMessage;
+			path = iOSMB-Server;
 			sourceTree = "<group>";
 		};
 		8F9FC9732571138E0014E7CC /* Package */ = {
@@ -364,7 +362,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				8F95B1BB25799B6F0027112F /* PBXTargetDependency */,
 				8FF0A15125754C54001775BD /* PBXTargetDependency */,
 			);
 			name = WebMessage;
@@ -668,6 +665,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(MonkeyDevTheosPath)/vendor/include/**",
 					"$(MonkeyDevTheosPath)/include",
+					"$(PROJECT_DIR)/iOSMB-Server/Libraries",
 				);
 				INSTALL_PATH = /usr/bin;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -679,7 +677,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WebMessage/Package/Library/MobileSubstrate/DynamicLibraries",
-					"$(PROJECT_DIR)/WebMessage/Libraries",
+					"$(PROJECT_DIR)/iOSMB-Server/Libraries",
 				);
 				MonkeyDevBuildPackageOnAnyBuild = NO;
 				MonkeyDevClearUiCacheOnInstall = NO;
@@ -694,7 +692,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.enzodjabali.iosmb-server;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "WebMessage/WebMessage-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "iOSMB-Server/WebMessage-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 arm64e";
@@ -720,6 +718,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(MonkeyDevTheosPath)/vendor/include/**",
 					"$(MonkeyDevTheosPath)/include",
+					"$(PROJECT_DIR)/iOSMB-Server/Libraries",
 				);
 				INSTALL_PATH = /usr/bin;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -731,7 +730,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WebMessage/Package/Library/MobileSubstrate/DynamicLibraries",
-					"$(PROJECT_DIR)/WebMessage/Libraries",
+					"$(PROJECT_DIR)/iOSMB-Server/Libraries",
 				);
 				MonkeyDevBuildPackageOnAnyBuild = NO;
 				MonkeyDevClearUiCacheOnInstall = NO;

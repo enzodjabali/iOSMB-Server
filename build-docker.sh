@@ -27,9 +27,31 @@ if [ "$(docker ps -aq -f name=${CONTAINER_NAME})" ]; then
     docker rm -f ${CONTAINER_NAME} 2>/dev/null || true
 fi
 
-# Build the Docker image
-echo -e "${BLUE}Building Docker image...${NC}"
-docker build -t ${IMAGE_NAME}:latest .
+# Clean output directory
+echo -e "${BLUE}Cleaning output directory...${NC}"
+rm -rf ${OUTPUT_DIR}/*
+
+# Prune Docker build cache to ensure fresh build
+echo -e "${BLUE}Pruning Docker build cache...${NC}"
+docker system prune -f
+
+# Check if Swift binary exists
+if [ ! -f "iOSMB-Server/Package/usr/bin/iOSMB-Server" ]; then
+    echo -e "${RED}ERROR: Swift binary not found!${NC}"
+    echo ""
+    echo "The Swift binary must be built on macOS first."
+    echo "Please run: ./build-swift-macos.sh on a Mac"
+    echo ""
+    echo "Or push a tag to GitHub to use the automated build with macOS runner."
+    exit 1
+fi
+
+echo -e "${GREEN}Swift binary found - proceeding with build${NC}"
+
+# Build the Docker image with --no-cache to force fresh build
+# Use --platform linux/amd64 to ensure x86_64 image on Apple Silicon Macs
+echo -e "${BLUE}Building Docker image (no cache)...${NC}"
+docker build --platform linux/amd64 --no-cache -t ${IMAGE_NAME}:latest -f Dockerfile.theos .
 
 # Create output directory
 mkdir -p ${OUTPUT_DIR}
@@ -37,7 +59,7 @@ mkdir -p ${OUTPUT_DIR}
 # Run the container and copy the .deb file
 echo ""
 echo -e "${BLUE}Running build container...${NC}"
-docker run --name ${CONTAINER_NAME} ${IMAGE_NAME}:latest
+docker run --platform linux/amd64 --name ${CONTAINER_NAME} ${IMAGE_NAME}:latest
 
 # Copy the .deb file from the container
 echo ""

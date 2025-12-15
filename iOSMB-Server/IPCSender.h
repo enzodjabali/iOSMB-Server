@@ -7,11 +7,17 @@
 
 #ifndef IPCSender_h
 #define IPCSender_h
+
+// Conditional import for standalone builds
+#ifndef STANDALONE_BUILD
 #import <MRYIPCCenter.h>
+#endif
 
 @interface IPCSender : NSObject
 
+#ifndef STANDALONE_BUILD
 @property (strong) MRYIPCCenter* center;
+#endif
 
 - (id)init;
 - (void)sendText:(NSString *)text withSubject:(NSString *)subject toAddress:(NSString *)address withAttachments:(NSArray *)paths;

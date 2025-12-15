@@ -1,5 +1,5 @@
 # Dockerfile for building iOSMB-Server Sileo jailbreak tweak
-# This builds the .deb package for iOS jailbroken devices
+# This builds the .deb package for iOS jailbroken devices including Swift compilation
 
 FROM ubuntu:22.04
 
@@ -10,7 +10,14 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV THEOS=/opt/theos
 ENV PATH="${THEOS}/bin:${PATH}"
 
-# Install required dependencies
+# Set Swift environment
+ENV SWIFT_VERSION=5.9.2
+ENV SWIFT_PLATFORM=ubuntu22.04
+ENV SWIFT_BRANCH=swift-5.9.2-release
+ENV SWIFT_RELEASE=swift-${SWIFT_VERSION}-RELEASE
+ENV SWIFT_ARCHIVE=${SWIFT_RELEASE}-${SWIFT_PLATFORM}.tar.gz
+
+# Install required dependencies including Swift dependencies
 RUN apt-get update && apt-get install -y \
     curl \
     git \
@@ -32,7 +39,29 @@ RUN apt-get update && apt-get install -y \
     libtinfo5 \
     libncurses5 \
     rsync \
+    binutils \
+    libc6-dev \
+    libcurl4-openssl-dev \
+    libedit2 \
+    libgcc-11-dev \
+    libpython3.10 \
+    libsqlite3-0 \
+    libstdc++-11-dev \
+    libxml2-dev \
+    libz3-dev \
+    pkg-config \
+    tzdata \
+    zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# Download and install Swift toolchain
+RUN wget -q https://download.swift.org/$SWIFT_BRANCH/ubuntu2204/$SWIFT_RELEASE/$SWIFT_ARCHIVE && \
+    tar -xzf $SWIFT_ARCHIVE -C /usr/local && \
+    rm $SWIFT_ARCHIVE && \
+    ln -s /usr/local/$SWIFT_RELEASE-ubuntu22.04 /usr/local/swift
+
+# Add Swift to PATH
+ENV PATH="/usr/local/swift/usr/bin:${PATH}"
 
 # Install ldid (code signing tool) - build from source with all required libraries
 RUN git clone https://github.com/ProcursusTeam/ldid.git /tmp/ldid && \
@@ -89,7 +118,32 @@ RUN if [ -f /build/iOSMB-Server/Libraries/libmryipc.dylib ]; then \
 # Create a build script
 RUN echo '#!/bin/bash\n\
 set -e\n\
+echo ""\n\
+echo "========================================"\n\
+echo "Building Swift binary (iOSMB-Server)..."\n\
+echo "========================================"\n\
 \n\
+# Build Swift binary for iOS\n\
+cd /build/iOSMB-Server\n\
+\n\
+# Compile Swift sources for iOS arm64/arm64e\n\
+swiftc \\\n\
+    -target arm64-apple-ios12.0 \\\n\
+    -sdk /opt/theos/sdks/iPhoneOS13.7.sdk \\\n\
+    -F /opt/theos/sdks/iPhoneOS13.7.sdk/System/Library/Frameworks \\\n\
+    -L /opt/theos/sdks/iPhoneOS13.7.sdk/usr/lib \\\n\
+    -import-objc-header WebMessage-Bridging-Header.h \\\n\
+    -Xlinker -rpath -Xlinker @executable_path/Frameworks \\\n\
+    -Xlinker -rpath -Xlinker /usr/lib \\\n\
+    -o Package/usr/bin/iOSMB-Server \\\n\
+    main.swift \\\n\
+    WebMessageServer.swift \\\n\
+    IPCSender.m\n\
+\n\
+# Code sign the binary\n\
+ldid -S Package/usr/bin/iOSMB-Server\n\
+\n\
+echo ""\n\
 echo "========================================"\n\
 echo "Building libiosmb tweak..."\n\
 echo "========================================"\n\

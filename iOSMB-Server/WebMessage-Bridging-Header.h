@@ -4,4 +4,4 @@
 
 #include <ifaddrs.h>
 #include "kern_memorystatus.h"
-#import "IPCSender.m"
+#import "IPCSender.h"

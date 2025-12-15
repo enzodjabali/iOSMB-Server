@@ -3,6 +3,20 @@ Packages
 
 output/iOSMB-Server.deb
 
+# Xcode build artifacts #
+#########################
+build/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+DerivedData/
+.build/
+
+# Swift Package Manager #
+#########################
+.swiftpm/
+*.resolved
+
 # OS generated files #
 ######################
 .DS_Store

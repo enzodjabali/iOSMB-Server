@@ -6,8 +6,29 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-# Prompt for version
-read -p "Enter version number (e.g., 0.1.0): " NEW_VERSION
+# Find and update all control files
+CONTROL_FILES=(
+    "iOSMB-Server/Package/DEBIAN/control"
+    "libiosmb/control"
+)
+
+# Get current version from first control file
+CURRENT_VERSION=""
+if [ -f "${CONTROL_FILES[0]}" ]; then
+    CURRENT_VERSION=$(grep "^Version:" "${CONTROL_FILES[0]}" | awk '{print $2}')
+fi
+
+# Prompt for version with current version shown
+if [ -n "$CURRENT_VERSION" ]; then
+    echo "Current version: $CURRENT_VERSION"
+    read -p "Enter new version number: " NEW_VERSION
+    # If user just pressed enter, keep current version
+    if [ -z "$NEW_VERSION" ]; then
+        NEW_VERSION="$CURRENT_VERSION"
+    fi
+else
+    read -p "Enter version number (e.g., 0.1.0): " NEW_VERSION
+fi
 
 # Validate version format (basic check for x.y.z format)
 if [[ ! $NEW_VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -22,24 +43,18 @@ echo ""
 # Array to track updated files
 UPDATED_FILES=()
 
-# Find and update all control files
-CONTROL_FILES=(
-    "iOSMB-Server/Package/DEBIAN/control"
-    "libiosmb/control"
-)
-
 for FILE in "${CONTROL_FILES[@]}"; do
     if [ -f "$FILE" ]; then
         # Check if file contains a Version line
         if grep -q "^Version:" "$FILE"; then
             # Get current version
-            CURRENT_VERSION=$(grep "^Version:" "$FILE" | awk '{print $2}')
+            FILE_VERSION=$(grep "^Version:" "$FILE" | awk '{print $2}')
             
-            # Update the version
-            sed -i "s/^Version:.*/Version: $NEW_VERSION/" "$FILE"
+            # Update the version (macOS sed requires empty string for -i flag)
+            sed -i '' "s/^Version:.*/Version: $NEW_VERSION/" "$FILE"
             
             echo -e "${GREEN}✓${NC} Updated $FILE"
-            echo -e "  ${CURRENT_VERSION} → ${NEW_VERSION}"
+            echo -e "  ${FILE_VERSION} → ${NEW_VERSION}"
             UPDATED_FILES+=("$FILE")
         else
             echo -e "${YELLOW}⚠${NC} Skipped $FILE (no Version field found)"
